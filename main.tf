@@ -40,6 +40,20 @@ resource "aws_internet_gateway" "Daniel-IGW" {
   }
 }
 
+#Creating a RT (Routing Table)
+resource "aws_route_table" "Daniel-RT"{
+  vpc_id = "${aws_vpc.daniel-dev-vpc.id}"
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${aws_internet_gateway.Daniel-IGW.id}"
+  }
+
+  tags = {
+    Name = "Daniel's Routing Table"
+  }
+}
+
 # Create a NIC for a host use
 resource "aws_network_interface" "NIC-Web" {
   subnet_id = "${aws_subnet.Daniel-k8s-subnet.id}"
